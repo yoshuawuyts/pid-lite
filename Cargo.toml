@@ -7,8 +7,8 @@ documentation = "https://docs.rs/pid-lite"
 description = "A small PID controller library"
 readme = "README.md"
 edition = "2018"
-keywords = []
-categories = []
+keywords = ["pid", "loop", "controller"]
+categories = ["algorithms"]
 authors = [
     "Yoshua Wuyts <yoshuawuyts@gmail.com>"
 ]
