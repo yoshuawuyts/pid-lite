@@ -23,10 +23,10 @@
 //!
 //! # No-std support
 //!
-//! `#[no_std]` support can be enabled by disabling the default features. This
-//! disables the `Controller::update` method which automatically calculates the
-//! time elapsed. Instead use the `Controller::update_elapsed` method which takes
-//! an externally calculated `Duration`.
+//! `#[no_std]` support can be enabled by disabling the default crate-level
+//! features. This disables the `Controller::update` method which automatically
+//! calculates the time elapsed. Instead use the `Controller::update_elapsed`
+//! method which takes an externally calculated `Duration`.
 //!
 //! # Examples
 //!
