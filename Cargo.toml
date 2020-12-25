@@ -7,13 +7,15 @@ documentation = "https://docs.rs/pid-lite"
 description = "A small PID controller library"
 readme = "README.md"
 edition = "2018"
-keywords = ["pid", "loop", "controller"]
-categories = ["algorithms"]
+keywords = ["pid", "loop", "controller", "control systems"]
+categories = ["algorithms", "date-and-time", "mathematics", "science::robotics", "no-std"]
 authors = [
     "Yoshua Wuyts <yoshuawuyts@gmail.com>"
 ]
 
 [features]
+default = ["std"]
+std = []
 
 [dependencies]
 

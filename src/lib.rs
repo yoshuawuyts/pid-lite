@@ -21,6 +21,13 @@
 //!
 //! [Read more on loop tuning](https://en.wikipedia.org/wiki/PID_controller#Loop_tuning).
 //!
+//! # No-std support
+//!
+//! `#[no_std]` support can be enabled by disabling the default features. This
+//! disables the `Controller::update` method which automatically calculates the
+//! time elapsed. Instead use the `Controller::update_elapsed` method which takes
+//! an externally calculated `Duration`.
+//!
 //! # Examples
 //!
 //! ```no_run
@@ -44,7 +51,9 @@
 #![deny(missing_debug_implementations, nonstandard_style)]
 #![warn(missing_docs, future_incompatible, unreachable_pub, rust_2018_idioms)]
 
-use std::time::{Duration, Instant};
+use core::time::Duration;
+#[cfg(feature = "std")]
+use std::time::Instant;
 
 /// PID controller
 ///
@@ -80,6 +89,7 @@ pub struct Controller {
 
     error_sum: f64,
     last_error: f64,
+    #[cfg(feature = "std")]
     last_instant: Option<Instant>,
 }
 
@@ -108,6 +118,7 @@ impl Controller {
             derivative_gain,
             error_sum: 0.0,
             last_error: 0.0,
+            #[cfg(feature = "std")]
             last_instant: None,
         }
     }
@@ -163,6 +174,7 @@ impl Controller {
     /// This function may panic if the `time_delta` in millis no longer fits in
     /// an `f64`. This limit can be encountered when the PID controller is updated on the scale of
     /// hours, rather than on the scale of minutes to milliseconds.
+    #[cfg(feature = "std")]
     #[must_use = "A PID controller does nothing if the correction is not applied"]
     pub fn update(&mut self, current_value: f64) -> f64 {
         let now = Instant::now();
@@ -230,9 +242,20 @@ impl Controller {
     /// controller.reset();
     /// ```
     pub fn reset(&mut self) {
+        self.reset_inner();
+    }
+
+    #[cfg(feature = "std")]
+    fn reset_inner(&mut self) {
         self.error_sum = 0.0;
         self.last_error = 0.0;
         self.last_instant = None;
+    }
+
+    #[cfg(not(feature = "std"))]
+    pub fn reset_inner(&mut self) {
+        self.error_sum = 0.0;
+        self.last_error = 0.0;
     }
 }
 
@@ -249,6 +272,7 @@ mod test {
     }
 
     #[test]
+    #[cfg(feature = "std")]
     fn no_correction() {
         let target = 80.0;
         let mut controller = Controller::new(target, 0.0, 0.0, 0.0);
