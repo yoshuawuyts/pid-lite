@@ -46,6 +46,23 @@
 $ cargo add pid-lite
 ```
 
+## Example
+
+```rust
+use pid_lite::Controller;
+use std::thread;
+use std::time::Duration;
+
+let target = 80.0;
+let mut controller = Controller::new(target, 0.25, 0.01, 0.01);
+
+loop {
+    let correction = controller.update(measure());
+    apply_correction(correction);
+    thread::sleep(Duration::from_secs(1));
+}
+```
+
 ## Safety
 This crate uses ``#![deny(unsafe_code)]`` to ensure everything is implemented in
 100% Safe Rust.

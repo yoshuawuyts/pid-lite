@@ -25,6 +25,8 @@
 //!
 //! ```no_run
 //! use pid_lite::Controller;
+//! use std::thread;
+//! use std::time::Duration;
 //!
 //! let target = 80.0;
 //! let mut controller = Controller::new(target, 0.25, 0.01, 0.01);
@@ -32,7 +34,7 @@
 //! loop {
 //!     let correction = controller.update(measure());
 //!     apply_correction(correction);
-//!     if correction == 0.0 { break }
+//!     thread::sleep(Duration::from_secs(1));
 //! }
 //! # fn measure() -> f64 { todo!() }
 //! # fn apply_correction(_: f64) { todo!() }
@@ -63,7 +65,6 @@ use std::time::{Duration, Instant};
 /// loop {
 ///     let correction = controller.update(measure());
 ///     apply_correction(correction);
-///     if correction == 0.0 { break };
 ///     thread::sleep(Duration::from_secs(1));
 /// }
 /// # fn measure() -> f64 { todo!() }
