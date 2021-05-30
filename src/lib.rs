@@ -80,7 +80,9 @@ use std::time::Instant;
 /// # fn measure() -> f64 { todo!() }
 /// # fn apply_correction(_: f64) { todo!() }
 /// ```
+
 #[derive(Debug)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct Controller {
     target: f64,
 
