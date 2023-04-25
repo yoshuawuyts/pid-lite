@@ -47,6 +47,7 @@
 //! # fn apply_correction(_: f64) { todo!() }
 //! ```
 
+#![cfg_attr(not(feature = "std"), no_std)]
 #![forbid(unsafe_code)]
 #![deny(missing_debug_implementations, nonstandard_style)]
 #![warn(missing_docs, future_incompatible, unreachable_pub, rust_2018_idioms)]
@@ -79,7 +80,9 @@ use std::time::Instant;
 /// # fn measure() -> f64 { todo!() }
 /// # fn apply_correction(_: f64) { todo!() }
 /// ```
+
 #[derive(Debug)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct Controller {
     target: f64,
 
