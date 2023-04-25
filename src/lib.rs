@@ -211,7 +211,7 @@ impl Controller {
     /// hours, rather than on the scale of minutes to milliseconds.
     #[must_use = "A PID controller does nothing if the correction is not applied"]
     pub fn update_elapsed(&mut self, current_value: f64, elapsed: Duration) -> f64 {
-        let elapsed = (elapsed.as_millis() as f64).min(1.0);
+        let elapsed = (elapsed.as_millis() as f64).max(1.0);
 
         let error = self.target - current_value;
         let error_delta = (error - self.last_error) / elapsed;
@@ -267,8 +267,8 @@ mod test {
     fn base_correction() {
         let target = 80.0;
         let mut controller = Controller::new(target, 0.5, 0.1, 0.2);
-        let dur = Duration::from_millis(2);
-        assert_eq!(controller.update_elapsed(60.0, dur), 16.0);
+        let dur = Duration::from_millis(4);
+        assert_eq!(controller.update_elapsed(60.0, dur), 19.0);
     }
 
     #[test]
