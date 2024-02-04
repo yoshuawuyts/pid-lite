@@ -160,13 +160,19 @@ impl Controller {
     }
 
     /// Set the proportional gain
-    pub fn set_proportional_gain(&mut self, proportional_gain: f64) { self.proportional_gain = proportional_gain; }
+    pub fn set_proportional_gain(&mut self, proportional_gain: f64) {
+        self.proportional_gain = proportional_gain;
+    }
 
     /// Set the integral gain
-    pub fn set_integral_gain(&mut self, integral_gain: f64) { self.integral_gain = integral_gain; }
+    pub fn set_integral_gain(&mut self, integral_gain: f64) {
+        self.integral_gain = integral_gain;
+    }
 
     /// Set the derivative gain
-    pub fn set_derivative_gain(&mut self, derivative_gain: f64) { self.derivative_gain = derivative_gain; }
+    pub fn set_derivative_gain(&mut self, derivative_gain: f64) {
+        self.derivative_gain = derivative_gain;
+    }
 
     /// Push an entry into the controller.
     ///
@@ -227,7 +233,7 @@ impl Controller {
 
         let error = self.target - current_value;
         let error_delta = (error - self.last_error) / elapsed;
-        self.error_sum = self.error_sum + error * elapsed;
+        self.error_sum += error * elapsed;
         self.last_error = error;
 
         let p = self.proportional_gain * error;
@@ -289,5 +295,17 @@ mod test {
         let target = 80.0;
         let mut controller = Controller::new(target, 0.0, 0.0, 0.0);
         assert_eq!(controller.update(60.0), 0.0);
+    }
+
+    #[test]
+    #[cfg(feature = "std")]
+    fn updating_values() {
+        let target = 80.0;
+        let mut controller = Controller::new(target, 0.5, 0.1, 0.2);
+        let dur = Duration::from_millis(4);
+        assert_eq!(controller.update_elapsed(60.0, dur), 19.0);
+        controller.set_proportional_gain(0.8);
+        controller.set_derivative_gain(0.5);
+        assert_eq!(controller.update_elapsed(60.0, dur), 32.0);
     }
 }
