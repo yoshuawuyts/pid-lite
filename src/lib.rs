@@ -159,6 +159,15 @@ impl Controller {
         self.target = target;
     }
 
+    /// Set the proportional gain
+    pub fn set_proportional_gain(&mut self, proportional_gain: f64) { self.proportional_gain = proportional_gain; }
+
+    /// Set the integral gain
+    pub fn set_integral_gain(&mut self, integral_gain: f64) { self.integral_gain = integral_gain; }
+
+    /// Set the derivative gain
+    pub fn set_derivative_gain(&mut self, derivative_gain: f64) { self.derivative_gain = derivative_gain; }
+
     /// Push an entry into the controller.
     ///
     /// # Examples
